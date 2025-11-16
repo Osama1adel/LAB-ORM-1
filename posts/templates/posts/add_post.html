@@ -1,10 +1,12 @@
 {% extends "posts/base.html" %}
 {% block content %}
-<h1 class="mb-4">Add New Post</h1>
-<form method="post">
+<h1 class="mb-4">{% if post %}Edit{% else %}Add New{% endif %} Post</h1>
+<form method="post" enctype="multipart/form-data">
   {% csrf_token %}
   {{ form.as_p }}
-  <button class="btn btn-primary" type="submit">Save</button>
-  <a class="btn btn-secondary" href="{% url 'home' %}">Cancel</a>
+  <button class="btn {% if post %}btn-warning{% else %}btn-primary{% endif %}" type="submit">
+    {% if post %}Update{% else %}Save{% endif %}
+  </button>
+  <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
 </form>
 {% endblock %}

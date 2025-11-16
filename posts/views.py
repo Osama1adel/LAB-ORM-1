@@ -20,13 +20,14 @@ def add_post(request):
         form = PostForm()
     return render(request, "posts/add_post.html", {"form": form})
 
+
 def edit_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == "POST":
-        form = PostForm(request.POST, request.FILES, instance=post)
+        form = PostForm(request.POST, request.FILES, instance=post)  # <-- مهم
         if form.is_valid():
             form.save()
-            return redirect("home")
+            return redirect("post_detail", post_id=post.id)  # رجّع للتفاصيل
     else:
         form = PostForm(instance=post)
     return render(request, "posts/edit_post.html", {"form": form, "post": post})

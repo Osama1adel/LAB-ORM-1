@@ -1,13 +1,13 @@
 {% extends "posts/base.html" %}
 {% block content %}
-<div class="card">
+<div class="card post-card mb-4">
   {% if post.image %}
-    <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-hero">
   {% endif %}
   <div class="card-body">
     <h1 class="card-title">{{ post.title }}</h1>
     <p class="text-muted">{{ post.published_at }}</p>
-    <p class="card-text">{{ post.content }}</p>
+    <p>{{ post.content }}</p>
 
     <a href="{% url 'edit_post' post.id %}" class="btn btn-warning">Edit</a>
     <a href="{% url 'delete_post' post.id %}" class="btn btn-danger">Delete</a>
