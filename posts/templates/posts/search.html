@@ -1,0 +1,101 @@
+{% extends "posts/base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- عنوان الصفحة -->
+    <h2 class="mb-4 fw-bold">بحث متقدم</h2>
+
+    <!-- بطاقة البحث -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <form method="get" class="row g-3">
+
+                <div class="col-md-4">
+                    <label class="form-label">كلمة البحث</label>
+                    {{ form.q }}
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">التصنيف</label>
+                    {{ form.category }}
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">منشور؟</label>
+                    {{ form.is_published }}
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">الترتيب</label>
+                    {{ form.order }}
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">عدد النتائج/صفحة</label>
+                    {{ form.per_page }}
+                </div>
+
+                <div class="col-md-12 mt-3">
+                    <button class="btn btn-primary">بحث</button>
+                    <a href="/search/" class="btn btn-secondary ms-2">إعادة ضبط</a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- نتائج البحث -->
+    {% if page_obj %}
+        <h5 class="mb-3 text-muted">عدد النتائج: {{ total }}</h5>
+
+        <div class="row">
+            {% for post in page_obj %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        {% if post.image %}
+                        <img src="{{ post.image.url }}" class="card-img-top" alt="">
+                        {% endif %}
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text text-muted">{{ post.content|truncatewords:20 }}</p>
+                            <a href="{% url 'post_detail' post.id %}" class="btn btn-dark btn-sm">عرض التفاصيل</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-muted">لا توجد نتائج مطابقة.</p>
+            {% endfor %}
+        </div>
+
+        <!-- الباجينيشن -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}">السابق</a>
+                    </li>
+                {% endif %}
+
+                <li class="page-item active">
+                    <span class="page-link">{{ page_obj.number }}</span>
+                </li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}">التالي</a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+    {% endif %}
+
+</div>
+
+{% endblock %}
